@@ -20,9 +20,9 @@ function Login() {
 
     if (loginType === "student") {
       const student = {
-        username: "Rohit@123",
-        prn: "86688359052023",
-        password: "Rohit123",
+        username: "student@123",
+        prn: "12345",
+        password: "12345",
         name: "Rohit Patil",
         program: "AIML-Artificial Intelligence & Machine Learning",
       };
