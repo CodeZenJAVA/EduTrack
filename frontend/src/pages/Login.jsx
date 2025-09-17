@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // <-- import useNavigate
+import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const navigate = useNavigate(); // <-- initialize navigate
+  const navigate = useNavigate();
 
+  const [loginType, setLoginType] = useState("student"); // student, teacher, admin
   const [formData, setFormData] = useState({
     username: "",
     prn: "",
@@ -17,26 +18,63 @@ function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Hardcoded student credentials
-    const student = {
+    if (loginType === "student") {
+      const student = {
+        username: "Rohit@123",
+        prn: "86688359052023",
+        password: "Rohit123",
+        name: "Rohit Patil",
+        program: "AIML-Artificial Intelligence & Machine Learning",
+      };
+
+      if (
+        formData.username === student.username &&
+        formData.prn === student.prn &&
+        formData.password === student.password
+      ) {
+        navigate("/dashboard", { state: { student } });
+      } else {
+        alert("Invalid student credentials! Please try again.");
+      }
+    } else if (loginType === "teacher") {
+      const teacher = {
+        username: "Teacher@123",
+        password: "Teacher123",
+        name: "John Doe",
+        department: "Computer Science",
+        semesters: [1, 2], // semesters teacher is handling
+        subjects: {
+          1: ["Physics", "Chemistry", "EM-1"],
+          2: ["Engineering Graphics", "EM-2", "DBMS"],
+        },
+      };
+
+      if (
+        formData.username === teacher.username &&
+        formData.password === teacher.password
+      ) {
+        navigate("/teacherdashboard", { state: { teacher } });
+      } else {
+        alert("Invalid teacher credentials! Please try again.");
+      }
+    }
+  };
+
+  // Placeholder values based on loginType
+  const placeholders = {
+    student: {
       username: "Rohit@123",
       prn: "86688359052023",
       password: "Rohit123",
-      name: "Rohit Patil",
-      program: "AIML-Artificial Intelligence & Machine Learning",
-    };
-
-    // Check credentials
-    if (
-      formData.username === student.username &&
-      formData.prn === student.prn &&
-      formData.password === student.password
-    ) {
-      // Navigate to Dashboard and pass student info via state
-      navigate("/dashboard", { state: { student } });
-    } else {
-      alert("Invalid credentials! Please try again.");
-    }
+    },
+    teacher: {
+      username: "Teacher@123",
+      password: "Teacher123",
+    },
+    admin: {
+      username: "",
+      password: "",
+    },
   };
 
   return (
@@ -52,9 +90,25 @@ function Login() {
           boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
         }}
       >
+        <div className="d-flex justify-content-around mb-3">
+          {["student", "teacher", "admin"].map((type) => (
+            <button
+              key={type}
+              type="button"
+              onClick={() => setLoginType(type)}
+              className={`btn ${
+                loginType === type ? "btn-primary" : "btn-outline-primary"
+              }`}
+            >
+              {type.charAt(0).toUpperCase() + type.slice(1)}
+            </button>
+          ))}
+        </div>
+
         <h3 className="text-center mb-4" style={{ color: "#3E1E68" }}>
-          Student Login
+          {loginType.charAt(0).toUpperCase() + loginType.slice(1)} Login
         </h3>
+
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="username" className="form-label">
@@ -67,26 +121,28 @@ function Login() {
               name="username"
               value={formData.username}
               onChange={handleChange}
-              placeholder="Enter your username"
+              placeholder={placeholders[loginType].username}
               required
             />
           </div>
 
-          <div className="mb-3">
-            <label htmlFor="prn" className="form-label">
-              PRN Number
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="prn"
-              name="prn"
-              value={formData.prn}
-              onChange={handleChange}
-              placeholder="Enter your PRN"
-              required
-            />
-          </div>
+          {loginType === "student" && (
+            <div className="mb-3">
+              <label htmlFor="prn" className="form-label">
+                PRN Number
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="prn"
+                name="prn"
+                value={formData.prn}
+                onChange={handleChange}
+                placeholder={placeholders[loginType].prn}
+                required
+              />
+            </div>
+          )}
 
           <div className="mb-3">
             <label htmlFor="password" className="form-label">
@@ -99,7 +155,7 @@ function Login() {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              placeholder="Enter your password"
+              placeholder={placeholders[loginType].password}
               required
             />
           </div>

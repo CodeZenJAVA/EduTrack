@@ -1,6 +1,5 @@
 import User from "../models/UserModel.js";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
 
 // Helper function to generate JWT
 const generateToken = (id, role) => {
@@ -14,7 +13,7 @@ const generateToken = (id, role) => {
 // @access  Public (abhi ke liye)
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, password, prn, role, program } = req.body;
+    const { name, email, password, role, programId } = req.body;
 
     // check if user exists
     const userExists = await User.findOne({ email });
@@ -22,14 +21,13 @@ export const registerUser = async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // create new user
+    // create new user (password hashing pre-save hook handle karega)
     const user = await User.create({
       name,
       email,
       password,
-      prn,
       role,
-      program,
+      programId,
     });
 
     if (user) {
@@ -38,7 +36,7 @@ export const registerUser = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
-        program: user.program,
+        programId: user.programId,
         token: generateToken(user._id, user.role),
       });
     } else {
@@ -62,8 +60,8 @@ export const loginUser = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // check password
-    const isMatch = await bcrypt.compare(password, user.password);
+    // check password using model method
+    const isMatch = await user.matchPassword(password);
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
@@ -73,7 +71,7 @@ export const loginUser = async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
-      program: user.program,
+      programId: user.programId,
       token: generateToken(user._id, user.role),
     });
   } catch (err) {

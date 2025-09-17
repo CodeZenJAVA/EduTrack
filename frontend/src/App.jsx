@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard.jsx";
 import Subjects from "./pages/Subjects.jsx";
 import SubjectDetails from "./pages/SubjectDetails.jsx";
 import Portfolio from "./pages/Portfolio.jsx";
+import TeacherDashboard from "./pages/TeacherDashboard.jsx";
 
 function AppWrapper() {
   const location = useLocation();
@@ -26,6 +27,8 @@ function AppWrapper() {
           element={<SubjectDetails />}
         />
         <Route path="/portfolio" element={<Portfolio />} />
+        <Route path="/teacherdashboard"  element={<TeacherDashboard/>} />
+        <Route path="/teachersubjects/:semesterNumber" element={<SubjectDetails/>}/>
       </Routes>
     </>
   );
