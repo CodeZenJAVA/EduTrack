@@ -1,7 +1,15 @@
-import React from "react";
+
 import { FaUserCircle } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function Header({ studentName, programName }) {
+  const navigate = useNavigate();
+
+  const handleProfileClick = () => {
+    // Navigate to Portfolio page and pass student info
+    navigate("/portfolio", { state: { student: { name: studentName, program: programName } } });
+  };
+
   return (
     <section
       className="d-flex align-items-center justify-content-between px-4"
@@ -24,6 +32,7 @@ function Header({ studentName, programName }) {
       {/* My Profile Button */}
       <div className="text-center">
         <button
+          onClick={handleProfileClick}
           className="btn fw-bold d-flex align-items-center"
           style={{ backgroundColor: "#E45A92", color: "#fff" }}
         >

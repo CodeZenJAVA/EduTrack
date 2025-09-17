@@ -1,6 +1,9 @@
-import  { useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom"; // <-- import useNavigate
 
 function Login() {
+  const navigate = useNavigate(); // <-- initialize navigate
+
   const [formData, setFormData] = useState({
     username: "",
     prn: "",
@@ -13,8 +16,27 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Login data:", formData);
-    alert("Login functionality will be implemented later.");
+
+    // Hardcoded student credentials
+    const student = {
+      username: "Rohit@123",
+      prn: "86688359052023",
+      password: "Rohit123",
+      name: "Rohit Patil",
+      program: "AIML-Artificial Intelligence & Machine Learning",
+    };
+
+    // Check credentials
+    if (
+      formData.username === student.username &&
+      formData.prn === student.prn &&
+      formData.password === student.password
+    ) {
+      // Navigate to Dashboard and pass student info via state
+      navigate("/dashboard", { state: { student } });
+    } else {
+      alert("Invalid credentials! Please try again.");
+    }
   };
 
   return (

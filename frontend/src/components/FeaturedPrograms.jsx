@@ -1,12 +1,29 @@
-
 function FeaturedPrograms() {
   const programs = [
-    "AIML",
-    "COMPUTER SCIENCE",
-    "COMPUTER AND ELECTRONICS",
-    "MECHANICAL",
-    "MECHTRONICS",
-    "ELECTRONICS",
+    {
+      name: "AIML",
+      description: "Learn Artificial Intelligence & Machine Learning to build smart applications."
+    },
+    {
+      name: "COMPUTER SCIENCE",
+      description: "Explore core computer science concepts and software development skills."
+    },
+    {
+      name: "COMPUTER AND ELECTRONICS",
+      description: "Combine computing and electronics to design intelligent systems."
+    },
+    {
+      name: "MECHANICAL",
+      description: "Understand machines, mechanics, and industrial systems engineering."
+    },
+    {
+      name: "MECHTRONICS",
+      description: "Integrate mechanical, electronics, and control systems for automation."
+    },
+    {
+      name: "ELECTRONICS",
+      description: "Dive into circuits, devices, and modern electronics technology."
+    },
   ];
 
   return (
@@ -37,10 +54,10 @@ function FeaturedPrograms() {
                 }}
               >
                 <h5 className="fw-bold mb-3" style={{ color: "#5D2F77" }}>
-                  {program}
+                  {program.name}
                 </h5>
                 <p className="text-muted mb-4">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  {program.description}
                 </p>
                 <a
                   href="#"
